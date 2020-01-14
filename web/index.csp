@@ -1,0 +1,51 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<script src="main.js"></script>
+<title>AI / ML Experience - Object Detection </title>
+</head>
+<body>
+<div id="document">
+<div class="header" id="myHeader">
+	<div class="wide">
+  <h1>AI / ML Experience - Object Detection</h1></div>
+  <div class="narrow"><img class="right" src="logo.png"/></div>
+</div> 
+  <main>
+  	<div class="spaceFiller"></div>
+  	<div class="inline">
+  	 <a class="boxlink" href="camera.csp" target="_blank"><div id="camera" class="containerbig"><h2>Camera</h2></div></a>
+  	 <div class="containersmall"><img src="arrow.svg"/></div>  	
+  	 <a class="boxlink" href="EnsPortal.ProductionConfig.zen?$NAMESPACE=PYTHON&IRISUserName=SuperUser&IRISPassword=SYS" target="_blank"><div id="interoperability" class="containerbig"><h2>Interoperability</h2><img src="interoperability.png"/></div></a>
+  	 <div class="containersmall"><img src="arrow.svg"/></div>
+  	 <a class="boxlink" href="EnsPortal.BPLEditor.zen?NAMESPACE=PYTHON&BP=od.FruitOrderProcess.bpl&IRISUserName=SuperUser&IRISPassword=SYS" target="_blank"><div id="objectdetection" class="containerbig"><h2>Recognize objects</h2><img src="TensorFlowLogo.svg"/><img src="Python_logo.svg"/></div></a>
+     <div class="containersmall"><img src="arrow.svg"/></div>
+      <a class="boxlink" href="result.csp" target="_blank"><div id="objectdetection" class="containerbig"><h2>Show<br/>Annotated<br/>Image</h2></div></a>
+      <div class="containersmall"><img src="arrow.svg"/></div>
+      <a class="boxlink" href="/csp/sys/exp/%25CSP.UI.Portal.SQL.Home.zen?$NAMESPACE=PYTHON&IRISUserName=SuperUser&IRISPassword=SYS" target="_blank"><div id="objectdetection" class="containerbig"><h2>SQL<br/>Explorer</h2></div></a>
+      <div class="containersmall"><img src="arrow.svg"/></div>
+      <a class="boxlink" href="/csp/python/_DeepSee.UserPortal.Workflow.zen?$NAMESPACE=PYTHON&IRISUserName=SuperUser&IRISPassword=SYS" target="_blank"><div id="objectdetection" class="containerbig"><h2>Workflow<br/>Portal</h2></div></a>
+    </div>
+    <div class="spaceFiller">
+      </div>
+      <div class="handout">Handout The AI and Machine Learning Experience<br/><a href="https://1drv.ms/b/s!Ap2den1nqYUhh5QWreX2YIJqwk-nxQ?e=Km0dP2"><img src="pdf.png"/></a></div>
+      <!--
+  	<div class="containersmall"><img src="arrow-left.svg"/></div>
+  	<div class="containersmall"><img src="arrow-down.svg"/></div>
+  	-->
+
+  </main>
+  <div class="footer">
+  	<div class="narrow">
+  		<img class="left" src="footerLeft.png"/>
+  	</div>
+  	<div class="wide"></div>
+  	<div class="narrow">
+  		<img class="right" src="footerRight.png"/>
+  		</div>
+    
+  </div>
+</div>
+</body>
+</html>
+
