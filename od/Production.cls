@@ -4,7 +4,7 @@ Class od.Production Extends Ens.Production
 
 XData ProductionDefinition
 {
-<Production Name="od.Production" TestingEnabled="true" LogGeneralTraceEvents="false">
+<Production Name="od.Production" TestingEnabled="true" LogGeneralTraceEvents="true">
   <Description></Description>
   <ActorPoolSize>2</ActorPoolSize>
   <Item Name="od.BS.RestFulService" Category="" ClassName="od.RestFulService" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
@@ -22,6 +22,12 @@ XData ProductionDefinition
     <Setting Target="Host" Name="BusinessRuleName">od.odRouterRoutingRule</Setting>
   </Item>
   <Item Name="od.BP.FruitOrderProcess" Category="" ClassName="od.FruitOrderProcess" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
+  <Item Name="HubOperation" Category="" ClassName="od.Smavoo.HubOperation" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="true" Schedule="">
+    <Setting Target="Adapter" Name="HTTPPort">80</Setting>
+    <Setting Target="Adapter" Name="HTTPServer">sensor.smavoo.com</Setting>
+    <Setting Target="Adapter" Name="URL">/api/device/status</Setting>
+    <Setting Target="Adapter" Name="Credentials">SmavooSensorHub</Setting>
   </Item>
 </Production>
 }

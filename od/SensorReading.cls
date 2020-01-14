@@ -1,17 +1,18 @@
-Class od.SensorReading Extends (%Persistent, %JSON.Adaptor)
+Class od.SensorReading Extends (%Persistent,%JSON.Adaptor)
 {
-Property id As %Integer; // 690001001
+
+Property id As %String; // "690001001"
 Property cycle As %Integer; // 1
-Property type As %String; // LEVER_SWITCH_V2
-Property identity As %String; // vwpnwrclb001
+Property type As %String; // "LEVER_SWITCH_V2"
+Property identity As %String; // "vwpnwrclb001"
 Property vcc As %Integer; // 0
 Property heap As %Integer; // 211884
 Property rssi As %Integer; // -56
-Property value As %Integer; // 1
+Property value As %String; // "1"
 Property sleepWakeupCause As %Integer; // 1
 Property wifiFailureCount As %Integer; // 0
 Property serverFailureCount As %Integer; // 0
-Property fw As %String; // 3.1.8
+Property fw As %String; // "3.1.8"
 Property connectionTime As %Integer; // 1707
 Property transactionTime As %Integer; // 4101
 Property ska As %Integer; // 3600

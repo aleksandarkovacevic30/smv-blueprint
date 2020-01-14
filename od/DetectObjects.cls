@@ -1,5 +1,5 @@
 /// 
-Class od.DetectObjects Extends (Ens.BusinessProcessBPL)
+Class od.DetectObjects Extends Ens.BusinessProcessBPL
 {
 
 Storage Default

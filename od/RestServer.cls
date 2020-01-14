@@ -17,35 +17,49 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 
 ClassMethod deviceStatus() As %Status
 {
-	// Convert JSON payload to object, verifying its content in the process.
-	set tRequest = ##class(od.HubRequest).%New()
-	set tRequest.req = ##class(od.HubRequest).%New()
-	set tRequest.req = %request.%FromJSON(obj)
+	#dim %request As %CSP.Request
+
+	set st = $$$OK
+	// Calling this method triggers the cleanup of old sensor events.
+	if ^sensorEvent < ($ZDATETIME($HOROLOG,-2) - 86400) set st = ..deleteOldEvents(86400)
+	if st'=1 quit st
 	
-	/*
-	if '..GetJSONFromRequest(.obj) {
-		set %response.Status = ..#HTTP400BADREQUEST
-		set error = {"errormessage": "JSON not found"}
-		write error.%ToJSON()
+	// Convert JSON payload to object.
+	set tRequest = ##class(od.msg.HubRequest).%New()
+	set tRequest.req = ##class(od.SensorReading).%New()
+	set tStr = %request.Content.Read()
+	set st = tRequest.req.%JSONImport(tStr)
+	if st'=1 quit st
+	
+	// Check for duplicate messages. We assume that the combination of id and cycle is unique.
+	if $DATA(^sensorEvent(tRequest.req.id, tRequest.req.cycle)) {
+		write "{""state"":""DUPLICATE READING"",""id"":"""_tRequest.req.id_""",""cycle"":"_tRequest.req.cycle_"}"
 		quit $$$OK
 	}
+	set st = tRequest.req.%Save()
+	if st'=1 quit st
+	set ^sensorEvent(tRequest.req.id, tRequest.req.cycle) = $ZDATETIME($HOROLOG,-2)
 	
-	if '..ValidateJSON(obj,.error) {
-		set %response.Status = ..#HTTP400BADREQUEST
-		write error.%ToJSON()
-		quit $$$OK
+	write "{""state"":""DEVICE_INACTIVE_STATE"",""config"":{""ska"":""3600""}}"
+	quit st
+}
+
+/// Deletes all sensorEvents older than <var>pAge</var> seconds.
+/// The default is to delete all events older than one day.
+ClassMethod deleteOldEvents(pAge As %Integer = 86400) As %Status
+{
+	set ^sensorEvent = $ZDATETIME($HOROLOG,-2) // Keep track of last execution time.
+	set tMinimumTimestamp = ^sensorEvent - pAge
+	set kSensorId = $ORDER(^sensorEvent(""),-1)
+	while (kSensorId'="") {
+		set kSensorCycle = $ORDER(^sensorEvent(kSensorId,""),-1,tTimestamp)
+		while (kSensorCycle'="") {
+			if tTimestamp < tMinimumTimestamp kill ^sensorEvent(kSensorId,kSensorCycle)
+			set kSensorCycle = $ORDER(^sensorEvent(kSensorId,kSensorCycle),-1,tTimestamp)
+		}
+		set kSensorId = $ORDER(^sensorEvent(kSensorId),-1)
 	}
-	
-	// Create a request and send it to the operation.
-	do ..CopyToCoffeemakerFromJSON(.cm,obj)
-	
-	set sc = cm.%Save()
-	
-	set result={}
-	do result.%Set("Status",$s($$$ISERR(sc):$system.Status.GetOneErrorText(sc),1:"OK"))
-	write result.%ToJSON()
-	*/
-	quit sc
+	quit $$$OK
 }
 
 ClassMethod sendImage(id As %String) As %Status

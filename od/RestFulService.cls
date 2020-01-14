@@ -3,7 +3,7 @@ Class od.RestFulService Extends Ens.BusinessService
 
 Parameter ADAPTER = "EnsLib.HTTP.InboundAdapter";
 
-Property Target As %String(MAXLEN = 100)[InitialExpression = "od.BP.FruitOrderProcess"];
+Property Target As %String(MAXLEN = 100) [ InitialExpression = "od.BP.FruitOrderProcess" ];
 
 Parameter SETTINGS = "Target:Basic";
 
