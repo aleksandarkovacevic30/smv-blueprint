@@ -29,6 +29,9 @@ XData ProductionDefinition
     <Setting Target="Adapter" Name="URL">/api/device/status</Setting>
     <Setting Target="Adapter" Name="Credentials">SmavooSensorHub</Setting>
   </Item>
+  <Item Name="HubService" Category="" ClassName="od.Smavoo.HubService" PoolSize="0" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Host" Name="MaximumEventAge">10</Setting>
+  </Item>
 </Production>
 }
 

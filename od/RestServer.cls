@@ -11,17 +11,19 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 {
 <Routes>
 	<Route Url="/sendImage/:ind" Method="GET" Call="sendImage"/>
-	<Route Url="/api/device/status" Method="POST" Call="deviceStatus"/>
+	<Route Url="/api/device/:device" Method="GET" Call="getDeviceInfo"/>
+	<Route Url="/api/device/status" Method="POST" Call="setDeviceStatus"/>
 </Routes>
 }
 
-ClassMethod deviceStatus() As %Status
+ClassMethod setDeviceStatus() As %Status
 {
 	#dim %request As %CSP.Request
 
-	set st = $$$OK
 	// Calling this method triggers the cleanup of old sensor events.
-	if ^sensorEvent < ($ZDATETIME($HOROLOG,-2) - 86400) set st = ..deleteOldEvents(86400)
+	set st = $$$OK
+	set tMaxAge = ##class(Ens.Director).GetItemSettingValue("od.Production||HubService", "Host", "MaximumEventAge", .st)
+	if $GET(^sensorEvent) < ($ZDATETIME($HOROLOG,-2) - tMaxAge) set st = ..deleteOldEvents(tMaxAge)
 	if st'=1 quit st
 	
 	// Convert JSON payload to object.
@@ -40,8 +42,28 @@ ClassMethod deviceStatus() As %Status
 	if st'=1 quit st
 	set ^sensorEvent(tRequest.req.id, tRequest.req.cycle) = $ZDATETIME($HOROLOG,-2)
 	
-	write "{""state"":""DEVICE_INACTIVE_STATE"",""config"":{""ska"":""3600""}}"
+	// Forward the event to the Business Service.
+	#dim tOutput As od.msg.HubResponse
+	set st = ##class(Ens.Director).CreateBusinessService("HubService",.tService)
+	set st = tService.ProcessInput(tRequest,.tOutput)
+	set %response.Status = ..#HTTP200OK
+	
+	//write "{""state"":""DEVICE_INACTIVE_STATE"",""config"":{""ska"":""3600""}}"
+	set ^av("State returned") = tOutput.resp.state
+	set st = tOutput.resp.%JSONExportToString(.str)
+	write str
 	quit st
+}
+
+/// Returns most recent info for device with id <var>pDeviceid</var>.
+ClassMethod getDeviceInfo(pDeviceId As %String) As %Status
+{
+	&sql(SELECT TOP 1 type, ident, heap, wifiFailureCount 
+	INTO :tType, :tIdent, :tHeap, :tWifiFailureCount
+	FROM od.SensorReading ORDER BY ts DESC)
+	set tObj = {}.%Set("type",tType).%Set("identity",tIdent).%Set("heap",tHeap).%Set("wifiFailureCount",tWifiFailureCount)
+	write tObj.%ToJSON()
+	quit $$$OK
 }
 
 /// Deletes all sensorEvents older than <var>pAge</var> seconds.

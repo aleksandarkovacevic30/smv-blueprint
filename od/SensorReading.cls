@@ -1,10 +1,11 @@
 Class od.SensorReading Extends (%Persistent,%JSON.Adaptor)
 {
+Parameter DSTIME = "AUTO"; // For cube synchronization.
 
 Property id As %String; // "690001001"
 Property cycle As %Integer; // 1
 Property type As %String; // "LEVER_SWITCH_V2"
-Property identity As %String; // "vwpnwrclb001"
+Property identity As %String [ SqlFieldName = "ident" ]; // "vwpnwrclb001"
 Property vcc As %Integer; // 0
 Property heap As %Integer; // 211884
 Property rssi As %Integer; // -56
@@ -24,6 +25,17 @@ Property wrm As %Integer; // 5
 Property srm As %Integer; // 5
 Property oct As %Integer; // 1
 Property brownout As %Integer; // 0
+Property ts As %Integer (%JSONINCLUDE = "none"); // timestamp
+
+Index idIdx On(id);
+Index idCycleIdx On(id,cycle);
+Index tsIdx On(ts);
+
+Method %OnNew() As %Status [ Private, ServerOnly = 1 ] 
+{
+	set ..ts = $ZDATETIME($HOROLOG,-2)
+	quit $$$OK
+}
 
 Storage Default
 {
@@ -99,6 +111,9 @@ Storage Default
 </Value>
 <Value name="24">
 <Value>brownout</Value>
+</Value>
+<Value name="25">
+<Value>ts</Value>
 </Value>
 </Data>
 <DataLocation>^od.SensorReadingD</DataLocation>

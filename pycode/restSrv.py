@@ -16,4 +16,3 @@ def post_device_status():
 
 if __name__ == '__main__':
     api.run()
-
