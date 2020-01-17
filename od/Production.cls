@@ -11,7 +11,7 @@ XData ProductionDefinition
     <Setting Target="Adapter" Name="HTTPPort">80</Setting>
     <Setting Target="Adapter" Name="HTTPServer">sensor.smavoo.com</Setting>
     <Setting Target="Adapter" Name="URL">/api/device/status</Setting>
-    <Setting Target="Adapter" Name="Credentials">SmavooSensorHub</Setting>
+    <Setting Target="Adapter" Name="Credentials">smavoo</Setting>
   </Item>
   <Item Name="HubService" Category="" ClassName="od.Smavoo.HubService" PoolSize="0" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
     <Setting Target="Host" Name="MaximumEventAge">10</Setting>

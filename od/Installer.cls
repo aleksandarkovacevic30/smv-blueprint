@@ -4,6 +4,7 @@ Class od.Installer
 XData Install [ XMLNamespace = INSTALLER ]
 {
 <Manifest>
+<!--  <User Username="SuperUser" ChangePassword=false />-->
   <Default Name="NAMESPACE" Value="SMAVOO"/>
   <Default Name="DBNAME" Value="${NAMESPACE}"/>
   <Default Name="SOURCESPATH" Dir='#{$system.Util.GetEnviron("SRC_DIR")}' />
@@ -27,13 +28,13 @@ XData Install [ XMLNamespace = INSTALLER ]
 	<Log Level="1" Text="Configuring REST"/>
     <Invoke Class="od.Installer" Method="CreateREST">
    <Arg Value="${NameSpace}"/>
-   <Arg Value="/rest/imageod"/>
+   <Arg Value="/smavoo"/>
    <Arg Value="od.RestServer"/>
    </Invoke>
 
-	<Log Level="1" Text="Configuring Workflow Rules"/>
-    <Invoke Class="od.Installer" Method="AddWorkflowRules"/>
-    <Production Name="od.Production"  AutoStart="1" />
+    <Production Name="od.Production"  AutoStart="1">
+      <Credential Name="smavoo" Username="demo" Password="demo" Overwrite="0"/>
+    </Production>
   </Namespace>
 </Manifest>
 }
@@ -75,7 +76,7 @@ ClassMethod CreateREST(namespace2 As %String, url As %String, dispatch As %Strin
     new $namespace
     set $namespace = "%SYS"
     if '##class(Security.Applications).Exists(url) {
-        set props("AutheEnabled") = $$$AutheCache
+        set props("AutheEnabled") = $$$AutheUnauthenticated
         set props("NameSpace") = "SMAVOO"
         set props("IsNameSpaceDefault") = $$$NO
         set props("DispatchClass") = dispatch
